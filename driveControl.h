@@ -6,7 +6,8 @@
 class DriveControl {
 
     public:
-        DriveControl(Controller::Controller _Left, Controller::Controller _Right);
+        DriveControl();
+        void setControllers(Controller::Controller _Left, Controller::Controller _Right)
         ~DriveControl();
         
         void Forward(byte Speed);

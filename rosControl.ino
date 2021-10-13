@@ -38,10 +38,10 @@ void setup() {
     rightNode.initNode();
     rightNode.subscribe(rightSub);
 
-    Left = Controller::Controller(LEFTPWM, LEFTA, LEFTB);
-    Right = Controller::Controller(RIGHTPWM, RIGHTA, RIGHTB);
+    Left.init(LEFTPWM, LEFTA, LEFTB);
+    Right.init(RIGHTPWM, RIGHTA, RIGHTB);
 
-    Control = DriveControl::DriveControl(Left, Right);
+    Control.setControllers(Left, Right);
 }
 
 void loop() {

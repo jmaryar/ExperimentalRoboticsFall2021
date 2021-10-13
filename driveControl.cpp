@@ -1,6 +1,8 @@
 #include "driveControl.h"
 
-DriveControl::DriveControl(Controller::Controller _Left, Controller::Controller _Right){
+DriveControl::DriveControl(){};
+
+void DriveControl::setControllers(Controller::Controller _Left, Controller::Controller _Right){
     Left = _Left;
     Right = _Right;
 

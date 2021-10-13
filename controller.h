@@ -11,7 +11,7 @@ class Controller{
     public:
                                 
         Controller();
-        Controller(int _PWMPIN, int _INAPIN, int _INBPIN);
+        void init(int _PWMPIN, int _INAPIN, int _INBPIN);
         ~Controller();
 
         void Drive(byte Speed, bool Forward);
