@@ -12,31 +12,28 @@
 #define RIGHTA 5
 #define RIGHTB 7
 
-ros::NodeHandle leftNode;
-ros::NodeHandle rightNode;
+ros::NodeHandle nh;
 
-Controller::Controller Left;
-Controller::Controller Right;
+Controller Left;
+Controller Right;
 
-DriveControl::DriveControl Control;
+DriveControl Control;
 
 void leftCallback(geometry_msgs::Twist& cmd_vel){
-    Left.Drive(cmd_vel.linear.x);
+    Left.Drive(cmd_vel.linear.x, 1);
 }
 
 void rightCallback(geometry_msgs::Twist& cmd_vel){
-    Right.Drive(cmd_vel.linear.x);
+    Right.Drive(cmd_vel.linear.x, 1);
 }
 
 ros::Subscriber<geometry_msgs::Twist> leftSub("leftDrive", leftCallback);
 ros::Subscriber<geometry_msgs::Twist> rightSub("rightDrive", rightCallback);
 
 void setup() {
-    leftNode.initNode();
-    leftNode.subscribe(leftSub);
-
-    rightNode.initNode();
-    rightNode.subscribe(rightSub);
+    nh.initNode();
+    nh.subscribe(leftSub);
+    nh.subscribe(rightSub);
 
     Left.init(LEFTPWM, LEFTA, LEFTB);
     Right.init(RIGHTPWM, RIGHTA, RIGHTB);
@@ -45,7 +42,6 @@ void setup() {
 }
 
 void loop() {
-    leftNode.spinOnce();
-    rightNode.spinOnce();
+    nh.spinOnce();
     delay(1);
 }

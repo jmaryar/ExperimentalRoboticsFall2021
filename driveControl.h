@@ -7,7 +7,7 @@ class DriveControl {
 
     public:
         DriveControl();
-        void setControllers(Controller::Controller _Left, Controller::Controller _Right)
+        void setControllers(Controller _Left, Controller _Right);
         ~DriveControl();
         
         void Forward(byte Speed);
@@ -16,8 +16,8 @@ class DriveControl {
         void TurnRight(int Degrees);
 
     private:
-        Controller::Controller Left;
-        Controller::Controller Right;
+        Controller Left;
+        Controller Right;
 
 };
 

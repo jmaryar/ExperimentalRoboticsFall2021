@@ -2,7 +2,7 @@
 
 DriveControl::DriveControl(){};
 
-void DriveControl::setControllers(Controller::Controller _Left, Controller::Controller _Right){
+void DriveControl::setControllers(Controller _Left, Controller _Right){
     Left = _Left;
     Right = _Right;
 

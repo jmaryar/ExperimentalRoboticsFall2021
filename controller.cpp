@@ -12,6 +12,7 @@ void Controller::init(int _PWMPIN, int _INAPIN, int _INBPIN){
     pinMode(PWMPIN, OUTPUT);
     pinMode(INAPIN, OUTPUT);
     pinMode(INBPIN, OUTPUT);
+    this->Stop();
 }
 
 Controller::~Controller(){};
