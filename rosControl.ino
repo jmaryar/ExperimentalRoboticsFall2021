@@ -4,7 +4,7 @@
 #include <geometry_msgs/Twist.h>
 #include "driveControl.h"
 
-//#include <package_name/TutorialsConfig.h> NOTE! CHANGE string 'Tutorials' to whatever you use in dynamic reconfigure cfg file"
+#include <package_name/TutorialsConfig.h> NOTE! CHANGE string 'Tutorials' to whatever you use in dynamic reconfigure cfg file"
 
 #define LEFTPWM 3
 #define LEFTA 2
