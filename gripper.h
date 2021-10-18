@@ -2,13 +2,14 @@
 #define GRIPPER_H
 
 #include <Arduino.h>
+#include <Servo.h>
 
 class Gripper{
 
     public:
                                 
         Gripper();
-        void init(int LEFT_SERVO_PWM_PIN, int RIGHT_SERVO_PWM_PIN, int LEFT_SERVO_POS, int RIGHT_SERVO_POS);
+        void init(int _LEFT_SERVO_PWM_PIN, int _RIGHT_SERVO_PWM_PIN, int _LEFT_SERVO_POS, int _RIGHT_SERVO_POS);
         ~Gripper();
 
         void Open();
