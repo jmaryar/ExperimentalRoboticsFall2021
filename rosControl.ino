@@ -27,12 +27,24 @@ Gripper Gripper;
 
 DriveControl Control;
 
-void leftCallback(geometry_msgs::Twist& cmd_vel){
-    Left.Drive(cmd_vel.linear.x, 1);
+void driveCallback(geometry_msgs::Twist& cmd_vel){
+    bool direction = FORWARD;
+    if (cmd_vel.linear.x == 0){
+        Left.Stop();
+        Right.Stop();
+    } else if (cmd_vel.linear.x < 0){
+        direction = BACKWARD;
+    }
+    Left.Drive(100, direction);
+    Right.Drive(100, direction);
 }
 
-void rightCallback(geometry_msgs::Twist& cmd_vel){
-    Right.Drive(cmd_vel.linear.x, 1);
+void leftTurnCallback(geometry_msgs::Twist& cmd_vel){
+    Left.Drive(cmd_vel.linear.x*255, 1);
+}
+
+void rightTurnCallback(geometry_msgs::Twist& cmd_vel){
+    Right.Drive(cmd_vel.linear.x*255, 1);
 }
 
 void gripperCallback(geometry_msgs::Twist& cmd_vel){
@@ -43,13 +55,15 @@ void gripperCallback(geometry_msgs::Twist& cmd_vel){
     }
 }
 
-ros::Subscriber<geometry_msgs::Twist> leftSub("leftDrive", leftCallback);
-ros::Subscriber<geometry_msgs::Twist> rightSub("rightDrive", rightCallback);
+ros::Subscriber<geometry_msgs::Twist> driveSub("drive", driveCallback);
+ros::Subscriber<geometry_msgs::Twist> leftSub("leftTurn", leftTurnCallback);
+ros::Subscriber<geometry_msgs::Twist> rightSub("rightTurn", rightTurnCallback);
 ros::Subscriber<geometry_msgs::Twist> gripperSub("gripperCallback", gripperCallback);
 
 
 void setup() {
     nh.initNode();
+    nh.subscribe(driveSub);
     nh.subscribe(leftSub);
     nh.subscribe(rightSub);
     nh.subscribe(gripperSub);

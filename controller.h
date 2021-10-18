@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-// #define FORWARD 1
-// #define BACKWARD 0
+#define FORWARD 1
+#define BACKWARD 0
 
 class Controller{
 
