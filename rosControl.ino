@@ -4,8 +4,6 @@
 #include <geometry_msgs/Twist.h>
 #include "driveControl.h"
 
-#include <package_name/TutorialsConfig.h> NOTE! CHANGE string 'Tutorials' to whatever you use in dynamic reconfigure cfg file"
-
 #define LEFTPWM 3
 #define LEFTA 2
 #define LEFTB 4
@@ -37,8 +35,8 @@ void rightCallback(geometry_msgs::Twist& cmd_vel){
     Right.Drive(cmd_vel.linear.x, 1);
 }
 
-void dynamicCallback(package_name::TutorialsConfig &config uint32_t level){
-    if(config.IsOpen){
+void gripperCallback(geometry_msgs::Twist& cmd_vel){
+    if(cmd_vel.linear.x == 0 || cmd_vel.linear.x > 0){
         Gripper.Open();
     }else{
         Gripper.Close();
@@ -47,23 +45,19 @@ void dynamicCallback(package_name::TutorialsConfig &config uint32_t level){
 
 ros::Subscriber<geometry_msgs::Twist> leftSub("leftDrive", leftCallback);
 ros::Subscriber<geometry_msgs::Twist> rightSub("rightDrive", rightCallback);
+ros::Subscriber<geometry_msgs::Twist> gripperSub("gripperCallback", gripperCallback);
 
-dynamic_reconfigure::Server<package_name::TutorialConfig> server;
-dynamic_reconfigure::Server<dynamic_tutorials::TutorialsConfig>::CallbackType f;
 
 void setup() {
     nh.initNode();
     nh.subscribe(leftSub);
     nh.subscribe(rightSub);
-    
+    nh.subscribe(gripperSub);
     
     Gripper.init(LEFT_SERVO_PWM_PIN, RIGHT_SERVO_PWM_PIN, LEFT_SERVO_POS, RIGHT_SERVO_POS);
     Left.init(LEFTPWM, LEFTA, LEFTB);
     Right.init(RIGHTPWM, RIGHTA, RIGHTB);
     
-    f= boost::bind(&dynamicCallback, _1,_2);
-    server.setCallback(f);
-
     Control.setControllers(Left, Right);
 }
 
