@@ -12,10 +12,18 @@
 #define RIGHTA 5
 #define RIGHTB 7
 
+#define LEFT_SERVO_PWM_PIN 9
+#define RIGHT_SERVO_PWM_PIN 10
+#define LEFT_SERVO_POS 90
+#define RIGHT_SERVO_POS 90
+
+
 ros::NodeHandle nh;
 
 Controller Left;
 Controller Right;
+
+Gripper Gripper;
 
 DriveControl Control;
 
@@ -38,19 +46,32 @@ void leftTurnCallback(geometry_msgs::Twist& cmd_vel){
 void rightTurnCallback(geometry_msgs::Twist& cmd_vel){
     Right.Drive(cmd_vel.linear.x*255, 1);
 }
+
+void gripperCallback(geometry_msgs::Twist& cmd_vel){
+    if(cmd_vel.linear.x == 0 || cmd_vel.linear.x > 0){
+        Gripper.Open();
+    }else{
+        Gripper.Close();
+    }
+}
+
 ros::Subscriber<geometry_msgs::Twist> driveSub("drive", driveCallback);
 ros::Subscriber<geometry_msgs::Twist> leftSub("leftTurn", leftTurnCallback);
 ros::Subscriber<geometry_msgs::Twist> rightSub("rightTurn", rightTurnCallback);
+ros::Subscriber<geometry_msgs::Twist> gripperSub("gripperCallback", gripperCallback);
+
 
 void setup() {
     nh.initNode();
     nh.subscribe(driveSub);
     nh.subscribe(leftSub);
     nh.subscribe(rightSub);
-
+    nh.subscribe(gripperSub);
+    
+    Gripper.init(LEFT_SERVO_PWM_PIN, RIGHT_SERVO_PWM_PIN, LEFT_SERVO_POS, RIGHT_SERVO_POS);
     Left.init(LEFTPWM, LEFTA, LEFTB);
     Right.init(RIGHTPWM, RIGHTA, RIGHTB);
-
+    
     Control.setControllers(Left, Right);
 }
 
